@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!--
+      Baseline Content-Security-Policy for the SPA document — defense-in-depth
+      for a password manager. `connect-src https:` lets the client reach a
+      user-supplied PD Server over HTTPS (cloud-hosted mode); ws:/wss: keep the
+      Vite dev HMR socket working. `script-src` keeps 'unsafe-inline' because a
+      static meta tag can't carry a per-build nonce (Vite's dev preamble and the
+      pre-paint theme bootstrap below are inline). For production, ALSO serve a
+      stricter nonce/hash-based CSP as a real HTTP header at the web server, and
+      tighten connect-src to your specific PD Server origin. frame-ancestors in
+      particular only takes effect as a header.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https: ws: wss:; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'"
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#0d4e88" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Depot</title>
+    <script>
+      // Apply the persisted/system theme before first paint to avoid a flash of
+      // the wrong theme (the React app only sets the class after it mounts, and
+      // mounting is deferred behind an async config fetch).
+      (function () {
+        try {
+          var theme = 'system'
+          var raw = localStorage.getItem('pd-options')
+          if (raw) {
+            var parsed = JSON.parse(raw)
+            if (parsed && parsed.state && parsed.state.theme) theme = parsed.state.theme
+          }
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+          var dark = theme === 'dark' || (theme === 'system' && prefersDark)
+          if (dark) document.documentElement.classList.add('dark')
+        } catch (e) {
+          /* ignore — fall back to the default light theme */
+        }
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
