@@ -58,7 +58,7 @@ export function AppBar() {
 
   return (
     <>
-      <header className="flex h-14 shrink-0 items-center gap-1.5 border-b bg-[#0d4e88] dark:bg-[#1e1e1e] px-2 sm:gap-3 sm:px-4">
+      <header className="flex h-14 shrink-0 items-center gap-1.5 border-b bg-brand px-2 sm:gap-3 sm:px-4">
         {/* App icon — doubles as mobile menu button in vault mode */}
         <button
           className="shrink-0 rounded-md p-1 transition-colors hover:bg-white/10"
