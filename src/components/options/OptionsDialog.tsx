@@ -17,16 +17,12 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useOptionsStore, type Theme } from '@/stores/optionsStore'
+import { LANGUAGES } from '@/i18n/languages'
 
 interface OptionsDialogProps {
   open: boolean
   onClose: () => void
 }
-
-const LANGUAGES = [
-  { code: 'en', label: 'English' },
-  { code: 'de', label: 'Deutsch' },
-]
 
 const THEMES: { value: Theme; labelKey: string; icon: typeof Sun }[] = [
   { value: 'system', labelKey: 'options.theme_system', icon: Monitor },

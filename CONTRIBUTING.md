@@ -50,8 +50,9 @@ npm run format      # Prettier — format your changes
   The `src/api` layer must not import stores, config, or routing directly — it is
   wired via `src/lib/apiBindings.ts`. Client state lives in Zustand stores
   (`src/stores`); all server state lives in TanStack Query.
-- **i18n.** All user-facing strings must be added to **both** `src/i18n/locales/en.json`
-  and `de.json` (keep the two in structural parity). Do not hardcode UI text.
+- **i18n.** All user-facing strings must be added to **every** locale file in
+  `src/i18n/locales/` (`en`, `de`, `fr`, `es`, `nl`). Structural parity across
+  the files is enforced by `src/i18n/locales.test.ts`. Do not hardcode UI text.
 - **Security.** Never log secrets (tokens, passwords, second passwords). Don't
   persist sensitive data to `localStorage`/cookies. Keep responses `no-store`.
 - **Formatting** is enforced by Prettier (`.prettierrc`); don't hand-format.

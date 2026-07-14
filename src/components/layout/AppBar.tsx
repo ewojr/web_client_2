@@ -16,11 +16,7 @@ import { DatabaseSelector } from '@/components/database/DatabaseSelector'
 import { useOptionsStore } from '@/stores/optionsStore'
 import { useAuthStore } from '@/stores/authStore'
 import { useVaultAppBarStore } from '@/hooks/useVaultAppBar'
-
-const LANGUAGES = [
-  { code: 'en', label: 'English' },
-  { code: 'de', label: 'Deutsch' },
-]
+import { LANGUAGES } from '@/i18n/languages'
 
 export function AppBar() {
   const vault = useVaultAppBarStore((s) => s.vault)
