@@ -18,7 +18,7 @@ The web client provides browser-based access to Password Depot vaults with suppo
 - **Second password protection** -- per-entry/folder unlock with session caching
 - **Session management** -- 10-minute inactivity timeout with warning, auto-logout
 - **Responsive design** -- desktop, tablet, and mobile layouts
-- **Internationalization** -- English and German (French, Spanish, Dutch planned)
+- **Internationalization** -- English, German, French, Spanish, and Dutch
 - **Theming** -- light, dark, and system-preference modes
 
 ## Technology Stack
@@ -301,7 +301,7 @@ src/
     tree/           Folder tree, tree node
     ui/             Base UI / shadcn components (button, dialog, select, etc.)
   hooks/            React Query hooks, WebAuthn, session watchdog, sorting
-  i18n/             i18next config + locale JSON files (en, de)
+  i18n/             i18next config + locale JSON files (en, de, fr, es, nl)
   lib/              Utilities (config, clipboard, dates, OIDC, base64, debounce)
   pages/            Route-level components (LoginPage, VaultPage, NotFoundPage)
   stores/           Zustand stores (auth, navigation, connection, options, second password)
@@ -352,7 +352,7 @@ Full API documentation: **https://github.com/acebit-gmbh/pd_rest_api** (also pub
 
 ## Contributing
 
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the development setup, coding conventions, and the pull-request checklist. In short: keep the API layering intact, add user-facing strings to **both** `en.json` and `de.json`, and make sure `npm run lint`, `npm run build`, and `npm run test:run` pass before opening a PR.
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for the development setup, coding conventions, and the pull-request checklist. In short: keep the API layering intact, add user-facing strings to **all** locale files (`en`, `de`, `fr`, `es`, `nl`), and make sure `npm run lint`, `npm run build`, and `npm run test:run` pass before opening a PR.
 
 ## Security
 
