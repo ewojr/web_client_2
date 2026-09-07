@@ -1,1 +1,81 @@
+name: Build Apache Web Client ZIP
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production client
+        run: npm run build
+
+      - name: Add Apache configuration
+        shell: bash
+        run: |
+          cat > dist/config.json <<'JSON'
+          {
+            "bundled": false,
+            "defaultServer": "",
+            "defaultPort": "8714",
+            "defaultAuthMethod": "standard",
+            "disabledAuthModes": []
+          }
+          JSON
+
+          cat > dist/.htaccess <<'HTACCESS'
+          Options -Indexes
+
+          <IfModule mod_headers.c>
+            Header always set X-Content-Type-Options "nosniff"
+            Header always set Referrer-Policy "strict-origin-when-cross-origin"
+            Header always set X-Frame-Options "SAMEORIGIN"
+            Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+          </IfModule>
+
+          <IfModule mod_expires.c>
+            ExpiresActive On
+            ExpiresByType text/html "access plus 0 seconds"
+            ExpiresByType application/json "access plus 0 seconds"
+            ExpiresByType text/css "access plus 1 year"
+            ExpiresByType application/javascript "access plus 1 year"
+            ExpiresByType image/svg+xml "access plus 1 year"
+            ExpiresByType image/png "access plus 1 year"
+            ExpiresByType image/jpeg "access plus 1 year"
+            ExpiresByType image/webp "access plus 1 year"
+            ExpiresByType font/woff2 "access plus 1 year"
+          </IfModule>
+
+          <IfModule mod_headers.c>
+            <FilesMatch "^(index\\.html|config\\.json)$">
+              Header set Cache-Control "no-store, no-cache, must-revalidate"
+            </FilesMatch>
+          </IfModule>
+          HTACCESS
+
+      - name: Create ZIP
+        run: |
+          cd dist
+          zip -r ../password-depot-webclient-apache.zip .
+
+      - name: Upload ready-to-deploy ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: password-depot-webclient-apache
+          path: password-depot-webclient-apache.zip
+          if-no-files-found: error
 
